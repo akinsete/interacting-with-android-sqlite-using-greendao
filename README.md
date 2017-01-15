@@ -1,2 +1,2 @@
-# android-integrating-greendao
-How to integrate greenDao into your android application
+# interacting-with-android-sqlite-using-greendao
+This projects covers basics using greendao ORM
