@@ -2,6 +2,7 @@ package com.greendao;
 
 import org.greenrobot.greendao.generator.DaoGenerator;
 import org.greenrobot.greendao.generator.Entity;
+import org.greenrobot.greendao.generator.Property;
 import org.greenrobot.greendao.generator.Schema;
 
 public class MyGenerator {
@@ -20,6 +21,13 @@ public class MyGenerator {
 
     private static void addTables(final Schema schema) {
         addUserEntities(schema);
+
+        Entity requests = addRequestTable(schema);
+        Entity assets = addAssetTable(schema);
+
+        Property assetsObject = assets.addLongProperty("request_id").notNull().getProperty();
+        requests.addToMany(assets, assetsObject, "assets");
+
     }
 
     private static Entity addUserEntities(final Schema schema) {
@@ -31,6 +39,26 @@ public class MyGenerator {
         user.addStringProperty("email");
         return user;
     }
+
+
+
+    private static Entity addRequestTable(final Schema schema) {
+        Entity repo = schema.addEntity("Request");
+        repo.addIdProperty().primaryKey().autoincrement();
+        repo.addIntProperty("object_id").notNull();
+        return repo;
+    }
+
+
+    private static Entity addAssetTable(final Schema schema) {
+        Entity repo = schema.addEntity("Asset");
+        repo.addIdProperty().primaryKey().autoincrement();
+        repo.addIntProperty("name").notNull();
+        repo.addStringProperty("location");
+        repo.addStringProperty("address");
+        return repo;
+    }
+
 
 //    private static Entity addPhonesEntities(final Schema schema) {
 //        Entity phone = schema.addEntity("Phone");
